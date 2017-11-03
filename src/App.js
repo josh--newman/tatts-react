@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import './App.css';
 import { fetchCompanies } from './api';
 import Company from './Company';
@@ -8,7 +9,7 @@ class App extends Component {
 
   componentDidMount() {
     this.setState({ loading: true });
-    return fetchCompanies()
+    return this.props._fetchCompanies()
       .then(companies => this.setState({ companies, loading: false }))
       .catch(err => {
         this.setState({ loading: false });
@@ -17,7 +18,6 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.state.companies)
     if (this.state.loading) {
       return <p>Loading...</p>;
     }
@@ -38,6 +38,17 @@ class App extends Component {
       )
     }
   }
+}
+
+App.propTypes = {
+  loading: PropTypes.bool.isRequired,
+  companies: PropTypes.array.isRequired
+}
+
+App.defaultProps = {
+  loading: false,
+  companies: [],
+  _fetchCompanies: fetchCompanies
 }
 
 export default App;
